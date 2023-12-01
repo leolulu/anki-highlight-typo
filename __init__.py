@@ -8,7 +8,7 @@ from aqt import gui_hooks
 from .spellchecker import SpellChecker
 import re
 
-spell_checker = SpellChecker(language='en')
+spell_checker = SpellChecker(language="en")
 
 stopwords = set()
 
@@ -18,8 +18,8 @@ def extend_stopwords():
     try:
         url = "https://gitee.com/leolulu2/my_spellcheck_exitword/raw/master/exit_words.txt"
         response = urllib.request.urlopen(url, timeout=10)
-        text = response.read().decode('utf-8')
-        for i in filter(lambda x: x != '', text.split('\n')):
+        text = response.read().decode("utf-8")
+        for i in filter(lambda x: x != "", text.split("\n")):
             stopwords.add(i.strip())
         print(f"Successfully update stopwords.")
     except Exception as e:
@@ -31,8 +31,8 @@ extend_stopwords()
 
 def highlight(changed: bool, note: Note, current_field_idx: int):
     field_names = note.keys()
-    if '释义例句等详细内容' in field_names:
-        if field_names[current_field_idx] not in ['单词', '释义例句等详细内容', '来源例句']:
+    if "释义例句等详细内容" in field_names:
+        if field_names[current_field_idx] not in ["单词", "释义例句等详细内容", "来源例句"]:
             return False
     if_changed_wrong = highlight_wrong(note, current_field_idx)
     if_changed_word = highlight_word(note, current_field_idx)
@@ -41,7 +41,7 @@ def highlight(changed: bool, note: Note, current_field_idx: int):
 
 def highlight_word_impl(word_value_provided, content, if_changed):
     content_data_to_use = content
-    content_data_to_use = content_data_to_use.replace(r'<br>', ' ')
+    content_data_to_use = content_data_to_use.replace(r"<br>", " ")
     content_data_to_use = re.sub(r"<span .*?<\/span>", "", content_data_to_use)
     for word_value in re.findall(word_value_provided, content_data_to_use, re.IGNORECASE):
         if_changed = True
@@ -53,31 +53,31 @@ def highlight_word_impl(word_value_provided, content, if_changed):
 
 def highlight_word(note: Note, current_field_idx: int):
     note_items = dict(note.items())
-    if '单词' not in note_items:
+    if "单词" not in note_items:
         return False
-    if note.keys()[current_field_idx] != '释义例句等详细内容':
+    if note.keys()[current_field_idx] != "释义例句等详细内容":
         return False
-    word_value = note_items['单词']
+    word_value = note_items["单词"]
     if_changed = False
     content = note.fields[current_field_idx]
-    if_changed, content = highlight_word_impl(word_value+word_value[-1]+'ing', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+word_value[-1]+'ed', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'ing', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'ed', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'ly', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'es', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'er', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'est', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'s', content, if_changed)
-    if_changed, content = highlight_word_impl(word_value+'t', content, if_changed)
-    if word_value.endswith('y'):
-        if_changed, content = highlight_word_impl(word_value[:-1]+'ies', content, if_changed)
-        if_changed, content = highlight_word_impl(word_value[:-1]+'ily', content, if_changed)
-    if word_value.endswith('e'):
-        if_changed, content = highlight_word_impl(word_value+'d', content, if_changed)
-        if_changed, content = highlight_word_impl(word_value+'r', content, if_changed)
-        if_changed, content = highlight_word_impl(word_value+'st', content, if_changed)
-        if_changed, content = highlight_word_impl(word_value[:-1]+'ing', content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + word_value[-1] + "ing", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + word_value[-1] + "ed", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "ing", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "ed", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "ly", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "es", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "er", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "est", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "s", content, if_changed)
+    if_changed, content = highlight_word_impl(word_value + "t", content, if_changed)
+    if word_value.endswith("y"):
+        if_changed, content = highlight_word_impl(word_value[:-1] + "ies", content, if_changed)
+        if_changed, content = highlight_word_impl(word_value[:-1] + "ily", content, if_changed)
+    if word_value.endswith("e"):
+        if_changed, content = highlight_word_impl(word_value + "d", content, if_changed)
+        if_changed, content = highlight_word_impl(word_value + "r", content, if_changed)
+        if_changed, content = highlight_word_impl(word_value + "st", content, if_changed)
+        if_changed, content = highlight_word_impl(word_value[:-1] + "ing", content, if_changed)
     if_changed, content = highlight_word_impl(word_value, content, if_changed)
     note.fields[current_field_idx] = content
     return if_changed
@@ -87,7 +87,7 @@ def highlight_wrong(note: Note, current_field_idx: int):
     if_changed = False
     content = note.fields[current_field_idx]
     content_data_to_use = content
-    content_data_to_use = content_data_to_use.replace(r'<br>', ' ')
+    content_data_to_use = content_data_to_use.replace(r"<br>", " ")
     content_data_to_use = re.sub(r"<u .*?<\/u>", "", content_data_to_use)
     words = re.split(r"[ ,\.\/']", content_data_to_use)
     words = [i for i in words if re.search(r"^[a-zA-Z]*$", i)]

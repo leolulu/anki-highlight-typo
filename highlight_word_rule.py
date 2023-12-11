@@ -1,4 +1,3 @@
-# def additional_rules_to_highlight_word(highlight_word_impl, word:str, explanation:str):
 simple_rules = [
     lambda word: word + word[-1] + "ing",
     lambda word: word + word[-1] + "ed",
@@ -10,6 +9,7 @@ simple_rules = [
     lambda word: word + "est",
     lambda word: word + "s",
     lambda word: word + "t",
+    lambda word: word + "n",
 ]
 
 complex_rules = [

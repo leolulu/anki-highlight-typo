@@ -18,6 +18,8 @@ complex_rules = [
         [
             lambda word: word[:-1] + "ies",
             lambda word: word[:-1] + "ily",
+            lambda word: word[:-1] + "ier",
+            lambda word: word[:-1] + "iest",
         ],
     ],
     [

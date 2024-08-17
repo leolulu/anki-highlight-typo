@@ -4,9 +4,9 @@ simple_rules = [
     lambda word: word + "ing",
     lambda word: word + "ed",
     lambda word: word + "ly",
+    lambda word: word + "est",
     lambda word: word + "es",
     lambda word: word + "er",
-    lambda word: word + "est",
     lambda word: word + "s",
     lambda word: word + "t",
     lambda word: word + "n",
@@ -16,10 +16,11 @@ complex_rules = [
     [
         lambda word: word.endswith("y"),
         [
-            lambda word: word[:-1] + "ies",
-            lambda word: word[:-1] + "ily",
-            lambda word: word[:-1] + "ier",
             lambda word: word[:-1] + "iest",
+            lambda word: word[:-1] + "ies",
+            lambda word: word[:-1] + "ied",
+            lambda word: word[:-1] + "ier",
+            lambda word: word[:-1] + "ily",
         ],
     ],
     [

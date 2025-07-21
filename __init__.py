@@ -2,7 +2,7 @@ import re
 import threading
 
 from anki.notes import Note
-from aqt import gui_hooks
+from aqt import gui_hooks, mw
 
 from .highlight_word_rule import complex_rules, simple_rules
 from .spellchecker import SpellChecker
@@ -17,6 +17,13 @@ def highlight_entry(changed: bool, note: Note, current_field_idx: int):
     if "释义例句等详细内容" in field_names:
         if field_names[current_field_idx] not in ["单词", "释义例句等详细内容", "来源例句"]:
             return False
+
+    card = note.card()
+    deck_name = mw.col.decks.name(card.did)
+    print(f"Current deck: {deck_name}")
+    if deck_name == "自动添加的初见单词":
+        return False
+
     if_changed_wrong = highlight_wrong(note, current_field_idx)
     if_changed_word = highlight_word(note, current_field_idx)
     return if_changed_word or if_changed_wrong

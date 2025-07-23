@@ -18,8 +18,8 @@ def highlight_entry(changed: bool, note: Note, current_field_idx: int):
         if field_names[current_field_idx] not in ["单词", "释义例句等详细内容", "来源例句"]:
             return False
 
-    card = note.card()
-    deck_name = mw.col.decks.name(card.did)
+    card_ids = note.card_ids()
+    deck_name = mw.col.decks.name(mw.col.get_card(card_ids[0]).did) if card_ids else "Unknown"
     print(f"Current deck: {deck_name}")
     if deck_name == "自动添加的初见单词":
         return False
